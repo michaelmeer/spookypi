@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import serial
 import alsaaudio
 import audioop
@@ -13,14 +14,14 @@ import os.path
 import random
 from collections import deque
 
-directory = "/home/pi/projects/spooky_pumpkin_pie/ressources/"
+directory = "ressources/"
 distance_trigger_limit = 300
 wait_after_sound = 2
 
 device = alsaaudio.PCM(device='default', mode=alsaaudio.PCM_NORMAL)
-device.setchannels(1)                          # Mono
-device.setrate(8000)                        # 8000 Hz
-device.setformat(alsaaudio.PCM_FORMAT_S16_LE)  # 16 bit little endian
+device.setchannels(1)                          	# Mono
+device.setrate(8000)                        	# 8000 Hz
+device.setformat(alsaaudio.PCM_FORMAT_S16_LE)  	# 16 bit little endian
 device.setperiodsize(500)
 
 lo = 2000
@@ -84,7 +85,6 @@ def play_sound(filename):
         if time.time() >= next_timestamp:
             device.write(data)
             next_timestamp = time.time() + period_length
-            # transform data to logarithmic scale
             vu = (math.log(float(max(audioop.max(data, 2), 1)))-log_lo)/(log_hi-log_lo)
             volume = (min(max(int(vu*100), 0), 100))
             print("%i: %f" % (counter, volume))
